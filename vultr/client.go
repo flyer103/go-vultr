@@ -1,3 +1,7 @@
+// Vultr API in golang.
+// You can use this SDK to create a Vultr API Client and then use the convenient
+// methods that encapsulates Vultr API. There are also some useful methods which
+// are made up of serveral methods and they can make your Vultr life better.
 package vultr
 
 import (
@@ -15,20 +19,25 @@ const (
 	HeaderContentType = "Content-Type"
 )
 
+// SDK Config
 type Config struct {
+	// required
+	APIKey string
+
+	// optional
 	DialTimeout           int
 	KeepAliveTimeout      int
 	ResponseHeaderTimeout int
-
-	APIKey string
 }
 
+// SDK Client
 type Client struct {
 	*Config
 
 	client *http.Client
 }
 
+// Initialize a new client
 func New(cfg *Config) (*Client, error) {
 	if cfg == nil || cfg.APIKey == "" {
 		return nil, ErrNoAPIKey

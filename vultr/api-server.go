@@ -7,12 +7,14 @@ import (
 	"strings"
 )
 
+// IPv6 Network info for Server Info
 type ServerV6Network struct {
 	V6MainIP      string `json:"v6_main_ip"`
 	V6NetworkSize string `json:"v6_network_size"`
 	V6Network     string `json:"v6_network"`
 }
 
+// Detailed server info
 type ServerInfo struct {
 	SubID              string            `json:"SUBID"`
 	OS                 string            `json:"os"`
@@ -49,6 +51,7 @@ type ServerInfo struct {
 	FirewallGroupID string `json:"FIREWALLGROUPID"`
 }
 
+// Result of reinstalling server.
 type ServerReinstallResult struct {
 	SubID  string
 	MainIP string
@@ -56,6 +59,9 @@ type ServerReinstallResult struct {
 	Error  error
 }
 
+// List all active or pending virtual machines on the current account.
+// The "status" field represents the status of the subscription and will be one of: pending | active | suspended | closed. If the status is "active", you can check "power_status" to determine if the VPS is powered on or not. When status is "active", you may also use "server_state" for a more detailed status of: none | locked | installingbooting | isomounting | ok.
+// The API does not provide any way to determine if the initial installation has completed or not. The "v6_network", "v6_main_ip", and "v6_network_size" fields are deprecated in favor of "v6_networks".
 func (vc *Client) ServerList() (map[string]ServerInfo, error) {
 	req, err := http.NewRequest(http.MethodGet, APIServerList, nil)
 	if err != nil {
@@ -76,6 +82,8 @@ func (vc *Client) ServerList() (map[string]ServerInfo, error) {
 	return serverInfo, err
 }
 
+// Reinstall the operating system on a virtual machine. All data will be permanently lost, but the IP address will remain the same. There is no going back from this call.
+// `subID` can be found using `ServerList()`
 func (vc *Client) ServerReinstall(subID string) error {
 	data := fmt.Sprintf("SUBID=%s", subID)
 	req, err := http.NewRequest(http.MethodPost, APIServerReInstall, strings.NewReader(data))
@@ -98,6 +106,7 @@ func (vc *Client) ServerReinstall(subID string) error {
 	return nil
 }
 
+// Reinstall all active or pending virtual machines on the current account.
 func (vc *Client) ServerReinstallAll() ([]ServerReinstallResult, error) {
 	serverInfo, err := vc.ServerList()
 	if err != nil {
