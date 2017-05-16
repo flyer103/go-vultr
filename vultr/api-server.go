@@ -2,7 +2,9 @@ package vultr
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strings"
 )
 
 type ServerV6Network struct {
@@ -47,6 +49,13 @@ type ServerInfo struct {
 	FirewallGroupID string `json:"FIREWALLGROUPID"`
 }
 
+type ServerReinstallResult struct {
+	SubID  string
+	MainIP string
+	Label  string
+	Error  error
+}
+
 func (vc *Client) ServerList() (map[string]ServerInfo, error) {
 	req, err := http.NewRequest(http.MethodGet, APIServerList, nil)
 	if err != nil {
@@ -65,4 +74,47 @@ func (vc *Client) ServerList() (map[string]ServerInfo, error) {
 	err = decoder.Decode(&serverInfo)
 
 	return serverInfo, err
+}
+
+func (vc *Client) ServerReinstall(subID string) error {
+	data := fmt.Sprintf("SUBID=%s", subID)
+	req, err := http.NewRequest(http.MethodPost, APIServerReInstall, strings.NewReader(data))
+	if err != nil {
+		return err
+	}
+	req.Header.Set(HeaderAPIKey, vc.APIKey)
+	req.Header.Set(HeaderContentType, "application/x-www-form-urlencoded")
+
+	resp, err := vc.client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("error: %d", resp.StatusCode)
+	}
+
+	return nil
+}
+
+func (vc *Client) ServerReinstallAll() ([]ServerReinstallResult, error) {
+	serverInfo, err := vc.ServerList()
+	if err != nil {
+		return nil, err
+	}
+
+	results := []ServerReinstallResult{}
+	for subID, info := range serverInfo {
+		err := vc.ServerReinstall(subID)
+		res := ServerReinstallResult{
+			SubID:  subID,
+			MainIP: info.MainIP,
+			Label:  info.Label,
+			Error:  err,
+		}
+		results = append(results, res)
+	}
+
+	return results, nil
 }
