@@ -14,6 +14,7 @@ const (
 	APINameServerStart
 	APINameServerReboot
 	APINameServerDestroy
+	APINameServerCreate
 )
 
 type APITask struct {

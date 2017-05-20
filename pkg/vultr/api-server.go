@@ -2,7 +2,9 @@ package vultr
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strings"
 )
 
 // IPv6 Network info for Server Info
@@ -136,4 +138,32 @@ func (vc *Client) ServerDestroy(subID string) error {
 // Destroy all servers on the account.
 func (vc *Client) ServerDestroyAll() ([]ServerBatchResult, error) {
 	return vc.PostAllSubIDs(APINameServerDestroy)
+}
+
+// Create a new virtual machine. You will start being billed for this immediately.
+// The response only contains the SUBID for the new machine.
+// You should use v1/server/list to poll and wait for the machine to be created (as this does not happen
+// instantly).
+// In order to create a server using a snapshot, use OSID 164 and specify a SNAPSHOTID.
+// Similarly, to create a server using an ISO use OSID 159 and specify an ISOID.
+func (vc *Client) ServerCreate(dcID, vpsPlanID, osID string) error {
+	data := fmt.Sprintf("DCID=%s&VPSPLANID=%s&OSID=%s", dcID, vpsPlanID, osID)
+	req, err := http.NewRequest(http.MethodPost, APIServerCreate, strings.NewReader(data))
+	if err != nil {
+		return err
+	}
+	req.Header.Set(HeaderAPIKey, vc.APIKey)
+	req.Header.Set(HeaderContentType, "application/x-www-form-urlencoded")
+
+	resp, err := vc.client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("error: %d", resp.StatusCode)
+	}
+
+	return nil
 }
