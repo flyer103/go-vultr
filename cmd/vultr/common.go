@@ -74,6 +74,8 @@ func CmdDo(apiName pvultr.APIName, isAll bool, args []string) error {
 			res, err = client.ServerStartAll()
 		case pvultr.APINameServerReboot:
 			res, err = client.ServerRebootAll()
+		case pvultr.APINameServerDestroy:
+			res, err = client.ServerDestroyAll()
 		}
 		if err != nil {
 			return err
@@ -97,6 +99,8 @@ func CmdDo(apiName pvultr.APIName, isAll bool, args []string) error {
 		return client.ServerStart(args[0])
 	case pvultr.APINameServerReboot:
 		return client.ServerReboot(args[0])
+	case pvultr.APINameServerDestroy:
+		return client.ServerDestroy(args[0])
 	default:
 		return nil
 	}

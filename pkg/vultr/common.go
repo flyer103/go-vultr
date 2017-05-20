@@ -13,6 +13,7 @@ const (
 	APINameServerHalt
 	APINameServerStart
 	APINameServerReboot
+	APINameServerDestroy
 )
 
 type APITask struct {
@@ -33,6 +34,8 @@ func (vc *Client) PostSubID(apiName APIName, subID string) error {
 		api = APIServerStart
 	case APINameServerReboot:
 		api = APIServerReboot
+	case APINameServerDestroy:
+		api = APIServerDestroy
 	}
 
 	data := fmt.Sprintf("SUBID=%s", subID)
@@ -93,6 +96,8 @@ func (vc *Client) doAPITask(apiName APIName, task APITask, ch chan ServerBatchRe
 		err = vc.ServerStart(task.SubID)
 	case APINameServerReboot:
 		err = vc.ServerReboot(task.SubID)
+	case APINameServerDestroy:
+		err = vc.ServerDestroy(task.SubID)
 	}
 
 	res := ServerBatchResult{

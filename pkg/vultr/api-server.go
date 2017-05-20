@@ -126,3 +126,14 @@ func (vc *Client) ServerReboot(subID string) error {
 func (vc *Client) ServerRebootAll() ([]ServerBatchResult, error) {
 	return vc.PostAllSubIDs(APINameServerReboot)
 }
+
+// Destroy (delete) a virtual machine. All data will be permanently lost, and the IP address
+// will be released. There is no going back from this call.
+func (vc *Client) ServerDestroy(subID string) error {
+	return vc.PostSubID(APINameServerDestroy, subID)
+}
+
+// Destroy all servers on the account.
+func (vc *Client) ServerDestroyAll() ([]ServerBatchResult, error) {
+	return vc.PostAllSubIDs(APINameServerDestroy)
+}

@@ -16,4 +16,5 @@ var (
 	APIServerHalt      = fmt.Sprintf("%s/v1/server/halt", APIPrefix)
 	APIServerStart     = fmt.Sprintf("%s/v1/server/start", APIPrefix)
 	APIServerReboot    = fmt.Sprintf("%s/v1/server/reboot", APIPrefix)
+	APIServerDestroy   = fmt.Sprintf("%s/v1/server/destroy", APIPrefix)
 )
