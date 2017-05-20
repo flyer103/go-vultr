@@ -1,18 +1,34 @@
 package vultr
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
 var serverCmd = &cobra.Command{
 	Use:           "server",
-	Short:         "Manipulate your server in Vultr",
+	Short:         "Manipulate your server in Vultr. The default action is to list your servers.",
 	SilenceErrors: true,
 	SilenceUsage:  true,
-	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("Hi server")
+	RunE: func(cmd *cobra.Command, args []string) error {
+		client, err := NewVultrClient()
+		if err != nil {
+			return err
+		}
+
+		info, err := client.ServerList()
+		if err != nil {
+			return err
+		}
+
+		data, err := PrettyJsonString(info)
+		if err != nil {
+			return err
+		}
+		fmt.Println(data)
+
+		return nil
 	},
 }
 

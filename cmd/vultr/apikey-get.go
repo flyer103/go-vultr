@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-
-	"github.com/flyer103/go-vultr/pkg/apikeyctrl"
 )
 
 var apikeyGetCmd = &cobra.Command{
@@ -26,18 +24,4 @@ var apikeyGetCmd = &cobra.Command{
 
 func init() {
 	apikeyCmd.AddCommand(apikeyGetCmd)
-}
-
-func GetAPIKey() (string, error) {
-	ctrl, err := apikeyctrl.New()
-	if err != nil {
-		return "", err
-	}
-
-	apikey, err := ctrl.Get()
-	if err != nil {
-		return "", err
-	}
-
-	return apikey, nil
 }
