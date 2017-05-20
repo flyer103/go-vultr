@@ -7,9 +7,10 @@ import (
 )
 
 var apikeyStoreCmd = &cobra.Command{
-	Use:   "store",
-	Short: "Store your api key",
-	Long:  "Store your api key",
+	Use:           "store",
+	Short:         "Store your api key",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctrl, err := apikeyctrl.New()
 		if err != nil {

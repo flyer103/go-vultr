@@ -7,9 +7,10 @@ import (
 )
 
 var apikeyDeleteCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "Delete your api key",
-	Long:  "Delete your api key",
+	Use:           "delete",
+	Short:         "Delete your api key",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctrl, err := apikeyctrl.New()
 		if err != nil {

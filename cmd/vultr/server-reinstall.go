@@ -14,9 +14,10 @@ var reinstallAll bool
 var ErrNoSUBID = errors.New("No SUBID")
 
 var serverReinstallCmd = &cobra.Command{
-	Use:   "reinstall",
-	Short: "Reinstall server",
-	Long:  "Reinstall server",
+	Use:           "reinstall",
+	Short:         "Reinstall server",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		apikey, err := GetAPIKey()
 		if err != nil {

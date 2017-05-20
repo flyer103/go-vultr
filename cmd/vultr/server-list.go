@@ -10,9 +10,10 @@ import (
 )
 
 var serverListCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List server info",
-	Long:  "List server info",
+	Use:           "list",
+	Short:         "List server info",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		apikey, err := GetAPIKey()
 		if err != nil {

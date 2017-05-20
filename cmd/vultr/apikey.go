@@ -11,9 +11,10 @@ var (
 )
 
 var apikeyCmd = &cobra.Command{
-	Use:   "apikey",
-	Short: "Manage your api key",
-	Long:  "Manage your api key",
+	Use:           "apikey",
+	Short:         "Manage your api key.",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("Hi apikey")
 	},

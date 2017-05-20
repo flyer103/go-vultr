@@ -7,9 +7,10 @@ import (
 )
 
 var serverCmd = &cobra.Command{
-	Use:   "server",
-	Short: "Manipulate your server in Vultr",
-	Long:  "Manipulate your server in Vultr",
+	Use:           "server",
+	Short:         "Manipulate your server in Vultr",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("Hi server")
 	},

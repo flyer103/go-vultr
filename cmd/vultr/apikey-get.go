@@ -9,9 +9,10 @@ import (
 )
 
 var apikeyGetCmd = &cobra.Command{
-	Use:   "get",
-	Short: "Get the stored api key",
-	Long:  "Get the stored api key",
+	Use:           "get",
+	Short:         "Get the stored api key",
+	SilenceUsage:  true,
+	SilenceErrors: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		apikey, err := GetAPIKey()
 		if err != nil {
