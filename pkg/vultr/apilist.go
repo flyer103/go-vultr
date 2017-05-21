@@ -22,4 +22,7 @@ var (
 	// Regions
 	APIRegionsAvailability = fmt.Sprintf("%s/v1/regions/availability", APIPrefix)
 	APIRegionsList         = fmt.Sprintf("%s/v1/regions/list", APIPrefix)
+
+	// Operating System
+	APIOSList = fmt.Sprintf("%s/v1/os/list", APIPrefix)
 )

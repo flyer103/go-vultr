@@ -6,11 +6,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var needAvailability bool
-
-var regionsCmd = &cobra.Command{
-	Use:           "regions",
-	Short:         "List all regions.",
+var osCmd = &cobra.Command{
+	Use:           "os",
+	Short:         "List all OS",
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -19,7 +17,7 @@ var regionsCmd = &cobra.Command{
 			return err
 		}
 
-		res, err := client.RegionsList(needAvailability)
+		res, err := client.OSList()
 		if err != nil {
 			return err
 		}
@@ -35,7 +33,5 @@ var regionsCmd = &cobra.Command{
 }
 
 func init() {
-	regionsCmd.Flags().BoolVarP(&needAvailability, "availability", "a", false, "show availability?")
-
-	RootCmd.AddCommand(regionsCmd)
+	RootCmd.AddCommand(osCmd)
 }
