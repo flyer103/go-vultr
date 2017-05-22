@@ -25,4 +25,7 @@ var (
 
 	// Operating System
 	APIOSList = fmt.Sprintf("%s/v1/os/list", APIPrefix)
+
+	// Plans
+	APIPlansList = fmt.Sprintf("%s/v1/plans/list", APIPrefix)
 )
